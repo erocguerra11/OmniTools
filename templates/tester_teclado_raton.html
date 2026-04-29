@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tester de Teclado y Ratón</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #16161a;
+    --surface2: #1e1e24;
+    --border: #2a2a35;
+    --border2: #3a3a48;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --accent: #00e5a0;
+    --accent2: #00b57d;
+    --accent-dim: rgba(0,229,160,0.12);
+    --accent-glow: rgba(0,229,160,0.25);
+    --danger: #ff4757;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', monospace;
+    min-height: 100vh;
+    padding: 2rem 1.5rem 3rem;
+    user-select: none;
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.25rem;
+  }
+
+  header h1 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+
+  header span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.75rem;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-lbl {
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .progress-wrap {
+    background: var(--surface);
+    border-radius: 99px;
+    height: 6px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 0.35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 10px var(--accent-glow);
+    width: 0%;
+  }
+
+  /* KEYBOARD */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .keyboard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 12px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow-x: auto;
+  }
+
+  .kb-row {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-start;
+  }
+
+  .key {
+    min-width: 34px;
+    height: 34px;
+    border-radius: 5px;
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s, border-color 0.1s, box-shadow 0.1s;
+    padding: 0 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .key:hover {
+    border-color: var(--border2);
+    background: #252530;
+  }
+
+  .key.pressed {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: var(--accent2);
+    box-shadow: 0 0 8px var(--accent-glow), inset 0 0 6px rgba(0,229,160,0.08);
+  }
+
+  .key.gap { background: none; border: none; cursor: default; pointer-events: none; }
+
+  .w2  { min-width: 54px; }
+  .w3  { min-width: 70px; }
+  .w4  { min-width: 88px; }
+  .w5  { min-width: 110px; }
+  .w6  { min-width: 130px; }
+  .w7  { min-width: 150px; }
+  .sp  { min-width: 260px; }
+  .h2  { height: 72px; }
+
+  /* MOUSE SECTION */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 1.5rem;
+  }
+
+  .mouse-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .mouse-svg-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .mouse-body-svg {
+    width: 90px;
+  }
+
+  .mbtn-shape { fill: var(--surface2); stroke: var(--border2); stroke-width: 1; transition: fill 0.1s, stroke 0.1s; }
+  .mbtn-shape.pressed { fill: var(--accent-dim); stroke: var(--accent2); }
+
+  .mouse-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .mbtn-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    transition: border-color 0.1s, color 0.1s;
+    cursor: default;
+  }
+
+  .mbtn-row.active {
+    border-color: var(--accent2);
+    color: var(--accent);
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border2);
+    flex-shrink: 0;
+    transition: background 0.1s;
+  }
+
+  .mbtn-row.active .dot { background: var(--accent); box-shadow: 0 0 5px var(--accent-glow); }
+
+  .scroll-info {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    transition: border-color 0.1s;
+  }
+
+  .scroll-info.active { border-color: var(--accent2); color: var(--accent); }
+  .scroll-count { font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-left: auto; color: var(--accent); }
+
+  /* last key display */
+  .lastkey-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .lastkey-val {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  /* reset */
+  .footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 0.5rem;
+  }
+
+  .reset-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .reset-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+
+  .complete-badge {
+    display: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    border: 1px solid var(--accent2);
+    border-radius: 6px;
+    padding: 7px 14px;
+    background: var(--accent-dim);
+  }
+
+  .complete-badge.show { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>// KEYBOARD & MOUSE TESTER</h1>
+  <span>prueba todas las teclas y botones</span>
+</header>
+
+<div class="stats-row">
+  <div class="stat"><div class="stat-val" id="pressedCount">0</div><div class="stat-lbl">pulsadas</div></div>
+  <div class="stat"><div class="stat-val" id="totalCount">0</div><div class="stat-lbl">total teclas</div></div>
+  <div class="stat"><div class="stat-val" id="pctVal">0%</div><div class="stat-lbl">completado</div></div>
+  <div class="stat"><div class="stat-val" id="mouseCount">0</div><div class="stat-lbl">botones ratón</div></div>
+</div>
+
+<div class="progress-wrap"><div class="progress-bar" id="progBar"></div></div>
+
+<div class="lastkey-bar">
+  Última tecla: <span class="lastkey-val" id="lastKey">—</span>
+  &nbsp;&nbsp;|&nbsp;&nbsp; Código: <span class="lastkey-val" id="lastCode">—</span>
+</div>
+
+<div class="section-label">teclado — pulsa en tu teclado físico o haz clic sobre cada tecla</div>
+<div class="keyboard" id="keyboard"></div>
+
+<div class="section-label">ratón — haz clic, scroll y usa los botones extra de tu ratón</div>
+<div class="bottom-grid">
+  <div class="mouse-wrap">
+    <div class="mouse-svg-area">
+      <svg class="mouse-body-svg" viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="38" width="86" height="88" rx="20" fill="#16161a" stroke="#2a2a35" stroke-width="1"/>
+        <path id="ml" class="mbtn-shape" d="M4 38 Q4 2 45 2 L45 36 L4 36 Z" rx="5"/>
+        <path id="mr" class="mbtn-shape" d="M86 38 Q86 2 45 2 L45 36 L86 36 Z"/>
+        <rect x="36" y="16" width="18" height="22" rx="9" fill="#1e1e24" stroke="#2a2a35" stroke-width="1"/>
+        <rect id="mwh" x="39" y="20" width="12" height="14" rx="6" fill="#2a2a35"/>
+        <line x1="45" y1="36" x2="45" y2="2" stroke="#2a2a35" stroke-width="1"/>
+      </svg>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);text-align:center;">haz clic en el diagrama</div>
+  </div>
+
+  <div>
+    <div class="mouse-info-grid">
+      <div class="mbtn-row" id="r-left"><div class="dot"></div>Clic izquierdo</div>
+      <div class="mbtn-row" id="r-right"><div class="dot"></div>Clic derecho</div>
+      <div class="mbtn-row" id="r-middle"><div class="dot"></div>Clic central</div>
+      <div class="mbtn-row" id="r-x1"><div class="dot"></div>Botón extra 1</div>
+      <div class="mbtn-row" id="r-x2"><div class="dot"></div>Botón extra 2</div>
+      <div class="mbtn-row" id="r-x3"><div class="dot"></div>Botón extra 3</div>
+      <div class="scroll-info" id="r-scroll">
+        <div class="dot" id="d-scroll"></div>
+        Scroll (rueda)
+        <span class="scroll-count" id="scrollCount">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <button class="reset-btn" id="resetBtn">↺ Reiniciar todo</button>
+  <div class="complete-badge" id="completeBadge">✓ ¡Teclado completo!</div>
+</div>
+
+<script>
+const layout = [
+  [
+    {l:'Esc',c:'Escape'},{l:'F1',c:'F1'},{l:'F2',c:'F2'},{l:'F3',c:'F3'},{l:'F4',c:'F4'},
+    {l:'F5',c:'F5'},{l:'F6',c:'F6'},{l:'F7',c:'F7'},{l:'F8',c:'F8'},
+    {l:'F9',c:'F9'},{l:'F10',c:'F10'},{l:'F11',c:'F11'},{l:'F12',c:'F12'},
+    {l:'PrtSc',c:'PrintScreen'},{l:'ScLk',c:'ScrollLock'},{l:'Pause',c:'Pause'}
+  ],
+  [
+    {l:'`',c:'Backquote'},{l:'1',c:'Digit1'},{l:'2',c:'Digit2'},{l:'3',c:'Digit3'},
+    {l:'4',c:'Digit4'},{l:'5',c:'Digit5'},{l:'6',c:'Digit6'},{l:'7',c:'Digit7'},
+    {l:'8',c:'Digit8'},{l:'9',c:'Digit9'},{l:'0',c:'Digit0'},{l:'-',c:'Minus'},
+    {l:'=',c:'Equal'},{l:'Bksp',c:'Backspace',w:'w4'},
+    {l:'Ins',c:'Insert'},{l:'Home',c:'Home'},{l:'PgUp',c:'PageUp'},
+    {l:'NLk',c:'NumLock'},{l:'N/',c:'NumpadDivide'},{l:'N*',c:'NumpadMultiply'},{l:'N-',c:'NumpadSubtract'}
+  ],
+  [
+    {l:'Tab',c:'Tab',w:'w3'},{l:'Q',c:'KeyQ'},{l:'W',c:'KeyW'},{l:'E',c:'KeyE'},
+    {l:'R',c:'KeyR'},{l:'T',c:'KeyT'},{l:'Y',c:'KeyY'},{l:'U',c:'KeyU'},
+    {l:'I',c:'KeyI'},{l:'O',c:'KeyO'},{l:'P',c:'KeyP'},{l:'[',c:'BracketLeft'},
+    {l:']',c:'BracketRight'},{l:'\\',c:'Backslash',w:'w3'},
+    {l:'Del',c:'Delete'},{l:'End',c:'End'},{l:'PgDn',c:'PageDown'},
+    {l:'N7',c:'Numpad7'},{l:'N8',c:'Numpad8'},{l:'N9',c:'Numpad9'},{l:'N+',c:'NumpadAdd',w:'w2',h:'h2'}
+  ],
+  [
+    {l:'Caps',c:'CapsLock',w:'w4'},{l:'A',c:'KeyA'},{l:'S',c:'KeyS'},{l:'D',c:'KeyD'},
+    {l:'F',c:'KeyF'},{l:'G',c:'KeyG'},{l:'H',c:'KeyH'},{l:'J',c:'KeyJ'},
+    {l:'K',c:'KeyK'},{l:'L',c:'KeyL'},{l:';',c:'Semicolon'},{l:"'",c:'Quote'},
+    {l:'Enter',c:'Enter',w:'w5'},
+    {l:'',c:'',gap:true},{l:'',c:'',gap:true},{l:'',c:'',gap:true},
+    {l:'N4',c:'Numpad4'},{l:'N5',c:'Numpad5'},{l:'N6',c:'Numpad6'}
+  ],
+  [
+    {l:'Shift',c:'ShiftLeft',w:'w5'},{l:'Z',c:'KeyZ'},{l:'X',c:'KeyX'},{l:'C',c:'KeyC'},
+    {l:'V',c:'KeyV'},{l:'B',c:'KeyB'},{l:'N',c:'KeyN'},{l:'M',c:'KeyM'},
+    {l:',',c:'Comma'},{l:'.',c:'Period'},{l:'/',c:'Slash'},{l:'Shift',c:'ShiftRight',w:'w6'},
+    {l:'',c:'',gap:true},{l:'↑',c:'ArrowUp'},{l:'',c:'',gap:true},
+    {l:'N1',c:'Numpad1'},{l:'N2',c:'Numpad2'},{l:'N3',c:'Numpad3'},{l:'NEnt',c:'NumpadEnter',w:'w2',h:'h2'}
+  ],
+  [
+    {l:'Ctrl',c:'ControlLeft',w:'w3'},{l:'Win',c:'MetaLeft',w:'w2'},{l:'Alt',c:'AltLeft',w:'w2'},
+    {l:'Space',c:'Space',w:'sp'},
+    {l:'AltGr',c:'AltRight',w:'w2'},{l:'Menu',c:'ContextMenu',w:'w2'},{l:'Ctrl',c:'ControlRight',w:'w3'},
+    {l:'',c:'',gap:true},{l:'←',c:'ArrowLeft'},{l:'↓',c:'ArrowDown'},{l:'→',c:'ArrowRight'},
+    {l:'N0',c:'Numpad0',w:'w4'},{l:'N.',c:'NumpadDecimal'}
+  ]
+];
+
+const pressedKeys = new Set();
+const pressedMouse = new Set();
+const allCodes = new Set();
+const keyEls = {};
+let scrollN = 0;
+
+function buildKB() {
+  const kb = document.getElementById('keyboard');
+  layout.forEach(row => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'kb-row';
+    row.forEach(def => {
+      const el = document.createElement('div');
+      if (def.gap) { el.className = 'key gap'; el.style.minWidth='34px'; rowEl.appendChild(el); return; }
+      el.className = 'key' + (def.w ? ' '+def.w : '') + (def.h ? ' '+def.h : '');
+      el.textContent = def.l;
+      el.dataset.code = def.c;
+      if (def.c) {
+        allCodes.add(def.c);
+        keyEls[def.c] = el;
+        el.addEventListener('click', () => { pressKey(def.c, def.l); });
+      }
+      rowEl.appendChild(el);
+    });
+    kb.appendChild(rowEl);
+  });
+  updateUI();
+}
+
+function pressKey(code, label) {
+  if (!allCodes.has(code) || !code) return;
+  pressedKeys.add(code);
+  if (keyEls[code]) keyEls[code].classList.add('pressed');
+  if (label) { document.getElementById('lastKey').textContent = label; document.getElementById('lastCode').textContent = code; }
+  updateUI();
+}
+
+function updateUI() {
+  const n = pressedKeys.size;
+  const total = allCodes.size;
+  const pct = total ? Math.round(n / total * 100) : 0;
+  document.getElementById('pressedCount').textContent = n;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('pctVal').textContent = pct + '%';
+  document.getElementById('progBar').style.width = pct + '%';
+  document.getElementById('mouseCount').textContent = pressedMouse.size;
+  document.getElementById('completeBadge').classList.toggle('show', n >= total && total > 0);
+}
+
+document.addEventListener('keydown', e => {
+  e.preventDefault();
+  const code = e.code;
+  const el = keyEls[code];
+  const label = el ? el.textContent : code;
+  pressKey(code, label);
+});
+
+const mouseRows = {0:'r-left',1:'r-middle',2:'r-right',3:'r-x1',4:'r-x2',5:'r-x3'};
+const mouseLabels = {0:'Clic izquierdo',1:'Clic central',2:'Clic derecho',3:'Botón extra 1',4:'Botón extra 2',5:'Botón extra 3'};
+
+function activateMouse(btn) {
+  const rowId = mouseRows[btn];
+  if (!rowId) return;
+  pressedMouse.add(btn);
+  document.getElementById(rowId).classList.add('active');
+  if (btn === 0) document.getElementById('ml').classList.add('pressed');
+  if (btn === 2) document.getElementById('mr').classList.add('pressed');
+  if (btn === 1) document.getElementById('mwh').style.fill = '#00b57d';
+  updateUI();
+}
+
+document.addEventListener('mousedown', e => { activateMouse(e.button); });
+document.addEventListener('mouseup', e => {
+  if (e.button === 0) document.getElementById('ml').classList.remove('pressed');
+  if (e.button === 2) document.getElementById('mr').classList.remove('pressed');
+  if (e.button === 1) document.getElementById('mwh').style.fill = '#2a2a35';
+});
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+document.addEventListener('wheel', e => {
+  scrollN++;
+  pressedMouse.add('scroll');
+  const si = document.getElementById('r-scroll');
+  const ds = document.getElementById('d-scroll');
+  si.classList.add('active');
+  ds.style.background = 'var(--accent)';
+  document.getElementById('scrollCount').textContent = '× ' + scrollN;
+  document.getElementById('mwh').style.fill = '#00b57d';
+  clearTimeout(si._t);
+  si._t = setTimeout(() => {
+    document.getElementById('mwh').style.fill = '#2a2a35';
+  }, 200);
+  updateUI();
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  pressedKeys.clear();
+  pressedMouse.clear();
+  scrollN = 0;
+  Object.values(keyEls).forEach(el => el.classList.remove('pressed'));
+  Object.values(mouseRows).forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById('ml').classList.remove('pressed');
+  document.getElementById('mr').classList.remove('pressed');
+  document.getElementById('mwh').style.fill = '#2a2a35';
+  document.getElementById('d-scroll').style.background = '';
+  document.getElementById('scrollCount').textContent = '—';
+  document.getElementById('lastKey').textContent = '—';
+  document.getElementById('lastCode').textContent = '—';
+  updateUI();
+});
+
+buildKB();
+</script>
+</body>
+</html>
