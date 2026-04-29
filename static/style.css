@@ -38,3 +38,10 @@ h1 {
     background-color: #334155;
     color: #38bdf8;
 }
+.main-logo {
+    width: 150px;       /* Ajusta el tamaño aquí */
+    height: auto;
+    display: block;
+    margin: 40px auto 0 auto; /* Lo centra y le da espacio arriba */
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5)); /* Le da un brillo azulado */
+}
