@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tester de Teclado y Ratón</title>
+<title>Teclado & Ratón — OmniTools AI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
@@ -24,7 +25,7 @@
     --danger: #ff4757;
   }
 
-  body {
+  .tester-wrap {
     background: var(--bg);
     color: var(--text);
     font-family: 'IBM Plex Sans', monospace;
@@ -107,7 +108,6 @@
     width: 0%;
   }
 
-  /* KEYBOARD */
   .section-label {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.68rem;
@@ -153,13 +153,9 @@
     padding: 0 5px;
     flex-shrink: 0;
     white-space: nowrap;
-    position: relative;
   }
 
-  .key:hover {
-    border-color: var(--border2);
-    background: #252530;
-  }
+  .key:hover { border-color: var(--border2); background: #252530; }
 
   .key.pressed {
     background: var(--accent-dim);
@@ -179,7 +175,6 @@
   .sp  { min-width: 260px; }
   .h2  { height: 72px; }
 
-  /* MOUSE SECTION */
   .bottom-grid {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -201,9 +196,7 @@
     margin-bottom: 10px;
   }
 
-  .mouse-body-svg {
-    width: 90px;
-  }
+  .mouse-body-svg { width: 90px; }
 
   .mbtn-shape { fill: var(--surface2); stroke: var(--border2); stroke-width: 1; transition: fill 0.1s, stroke 0.1s; }
   .mbtn-shape.pressed { fill: var(--accent-dim); stroke: var(--accent2); }
@@ -228,10 +221,7 @@
     cursor: default;
   }
 
-  .mbtn-row.active {
-    border-color: var(--accent2);
-    color: var(--accent);
-  }
+  .mbtn-row.active { border-color: var(--accent2); color: var(--accent); }
 
   .dot {
     width: 7px; height: 7px;
@@ -254,48 +244,36 @@
     border: 1px solid var(--border);
     font-size: 11px;
     color: var(--muted);
-    transition: border-color 0.1s;
+    transition: border-color 0.1s, color 0.1s;
   }
 
   .scroll-info.active { border-color: var(--accent2); color: var(--accent); }
-  .scroll-count { font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-left: auto; color: var(--accent); }
+  .scroll-count { font-family: 'IBM Plex Mono', monospace; font-size: 10px; margin-left: auto; }
 
-  /* last key display */
   .lastkey-bar {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    padding: 10px 14px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 10px 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 1.5rem;
-    display: flex;
-    gap: 12px;
-    align-items: center;
   }
 
-  .lastkey-val {
-    color: var(--text);
-    font-weight: 600;
-    font-size: 0.85rem;
-  }
+  .lastkey-val { color: var(--accent); }
 
-  /* reset */
-  .footer {
+  .footer-tester {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
   }
 
   .reset-btn {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 8px 20px;
+    font-size: 0.75rem;
+    padding: 8px 16px;
     border-radius: 6px;
     border: 1px solid var(--border2);
     background: transparent;
@@ -323,6 +301,17 @@
 </style>
 </head>
 <body>
+
+<nav class="top-nav">
+    <a class="nav-brand" href="/">OmniTools AI</a>
+    <div class="nav-links">
+        <a href="/seguridad">Seguridad</a>
+        <a href="/testers">Testers</a>
+        <a href="/teclado">Teclado & Ratón</a>
+    </div>
+</nav>
+
+<div class="tester-wrap">
 
 <header>
   <h1>// KEYBOARD & MOUSE TESTER</h1>
@@ -379,10 +368,16 @@
   </div>
 </div>
 
-<div class="footer">
+<div class="footer-tester">
   <button class="reset-btn" id="resetBtn">↺ Reiniciar todo</button>
   <div class="complete-badge" id="completeBadge">✓ ¡Teclado completo!</div>
 </div>
+
+</div>
+
+<footer class="footer">
+    Desarrollado por <span style="color: #38bdf8; font-weight: 600;">TuNombre</span> · OmniTools AI · Desde 2026
+</footer>
 
 <script>
 const layout = [
@@ -490,7 +485,6 @@ document.addEventListener('keydown', e => {
 });
 
 const mouseRows = {0:'r-left',1:'r-middle',2:'r-right',3:'r-x1',4:'r-x2',5:'r-x3'};
-const mouseLabels = {0:'Clic izquierdo',1:'Clic central',2:'Clic derecho',3:'Botón extra 1',4:'Botón extra 2',5:'Botón extra 3'};
 
 function activateMouse(btn) {
   const rowId = mouseRows[btn];
