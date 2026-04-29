@@ -298,6 +298,24 @@
   }
 
   .complete-badge.show { display: block; }
+
+  .back-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 7px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .back-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent2);
+  }
 </style>
 </head>
 <body>
@@ -313,118 +331,82 @@
 
 <div class="tester-wrap">
 
-<header>
-  <h1>// KEYBOARD & MOUSE TESTER</h1>
-  <span>prueba todas las teclas y botones</span>
-</header>
+  <a href="/" class="back-btn">← Volver al inicio</a>
 
-<div class="stats-row">
-  <div class="stat"><div class="stat-val" id="pressedCount">0</div><div class="stat-lbl">pulsadas</div></div>
-  <div class="stat"><div class="stat-val" id="totalCount">0</div><div class="stat-lbl">total teclas</div></div>
-  <div class="stat"><div class="stat-val" id="pctVal">0%</div><div class="stat-lbl">completado</div></div>
-  <div class="stat"><div class="stat-val" id="mouseCount">0</div><div class="stat-lbl">botones ratón</div></div>
-</div>
+  <header>
+    <h1>// KEYBOARD & MOUSE TESTER</h1>
+    <span>prueba todas las teclas y botones</span>
+  </header>
 
-<div class="progress-wrap"><div class="progress-bar" id="progBar"></div></div>
-
-<div class="lastkey-bar">
-  Última tecla: <span class="lastkey-val" id="lastKey">—</span>
-  &nbsp;&nbsp;|&nbsp;&nbsp; Código: <span class="lastkey-val" id="lastCode">—</span>
-</div>
-
-<div class="section-label">teclado — pulsa en tu teclado físico o haz clic sobre cada tecla</div>
-<div class="keyboard" id="keyboard"></div>
-
-<div class="section-label">ratón — haz clic, scroll y usa los botones extra de tu ratón</div>
-<div class="bottom-grid">
-  <div class="mouse-wrap">
-    <div class="mouse-svg-area">
-      <svg class="mouse-body-svg" viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="38" width="86" height="88" rx="20" fill="#16161a" stroke="#2a2a35" stroke-width="1"/>
-        <path id="ml" class="mbtn-shape" d="M4 38 Q4 2 45 2 L45 36 L4 36 Z" rx="5"/>
-        <path id="mr" class="mbtn-shape" d="M86 38 Q86 2 45 2 L45 36 L86 36 Z"/>
-        <rect x="36" y="16" width="18" height="22" rx="9" fill="#1e1e24" stroke="#2a2a35" stroke-width="1"/>
-        <rect id="mwh" x="39" y="20" width="12" height="14" rx="6" fill="#2a2a35"/>
-        <line x1="45" y1="36" x2="45" y2="2" stroke="#2a2a35" stroke-width="1"/>
-      </svg>
-    </div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);text-align:center;">haz clic en el diagrama</div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-val" id="pressedCount">0</div><div class="stat-lbl">pulsadas</div></div>
+    <div class="stat"><div class="stat-val" id="totalCount">0</div><div class="stat-lbl">total teclas</div></div>
+    <div class="stat"><div class="stat-val" id="pctVal">0%</div><div class="stat-lbl">completado</div></div>
+    <div class="stat"><div class="stat-val" id="mouseCount">0</div><div class="stat-lbl">botones ratón</div></div>
   </div>
 
-  <div>
-    <div class="mouse-info-grid">
-      <div class="mbtn-row" id="r-left"><div class="dot"></div>Clic izquierdo</div>
-      <div class="mbtn-row" id="r-right"><div class="dot"></div>Clic derecho</div>
-      <div class="mbtn-row" id="r-middle"><div class="dot"></div>Clic central</div>
-      <div class="mbtn-row" id="r-x1"><div class="dot"></div>Botón extra 1</div>
-      <div class="mbtn-row" id="r-x2"><div class="dot"></div>Botón extra 2</div>
-      <div class="mbtn-row" id="r-x3"><div class="dot"></div>Botón extra 3</div>
-      <div class="scroll-info" id="r-scroll">
-        <div class="dot" id="d-scroll"></div>
-        Scroll (rueda)
-        <span class="scroll-count" id="scrollCount">—</span>
+  <div class="progress-wrap"><div class="progress-bar" id="progBar"></div></div>
+
+  <div class="lastkey-bar">
+    Última tecla: <span class="lastkey-val" id="lastKey">—</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp; Código: <span class="lastkey-val" id="lastCode">—</span>
+  </div>
+
+  <div class="section-label">teclado — pulsa en tu teclado físico o haz clic sobre cada tecla</div>
+  <div class="keyboard" id="keyboard"></div>
+
+  <div class="section-label">ratón — haz clic, scroll y usa los botones extra de tu ratón</div>
+  <div class="bottom-grid">
+    <div class="mouse-wrap">
+      <div class="mouse-svg-area">
+        <svg class="mouse-body-svg" viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="38" width="86" height="88" rx="20" fill="#16161a" stroke="#2a2a35" stroke-width="1"/>
+          <path id="ml" class="mbtn-shape" d="M4 38 Q4 2 45 2 L45 36 L4 36 Z" rx="5"/>
+          <path id="mr" class="mbtn-shape" d="M86 38 Q86 2 45 2 L45 36 L86 36 Z"/>
+          <rect x="36" y="16" width="18" height="22" rx="9" fill="#1e1e24" stroke="#2a2a35" stroke-width="1"/>
+          <rect id="mwh" x="39" y="20" width="12" height="14" rx="6" fill="#2a2a35"/>
+          <line x1="45" y1="36" x2="45" y2="2" stroke="#2a2a35" stroke-width="1"/>
+        </svg>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);text-align:center;">haz clic en el diagrama</div>
+    </div>
+
+    <div>
+      <div class="mouse-info-grid">
+        <div class="mbtn-row" id="r-left"><div class="dot"></div>Clic izquierdo</div>
+        <div class="mbtn-row" id="r-right"><div class="dot"></div>Clic derecho</div>
+        <div class="mbtn-row" id="r-middle"><div class="dot"></div>Clic central</div>
+        <div class="mbtn-row" id="r-x1"><div class="dot"></div>Botón extra 1</div>
+        <div class="mbtn-row" id="r-x2"><div class="dot"></div>Botón extra 2</div>
+        <div class="mbtn-row" id="r-x3"><div class="dot"></div>Botón extra 3</div>
+        <div class="scroll-info" id="r-scroll">
+          <div class="dot" id="d-scroll"></div>
+          Scroll (rueda)
+          <span class="scroll-count" id="scrollCount">—</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="footer-tester">
-  <button class="reset-btn" id="resetBtn">↺ Reiniciar todo</button>
-  <div class="complete-badge" id="completeBadge">✓ ¡Teclado completo!</div>
-</div>
+  <div class="footer-tester">
+    <button class="reset-btn" id="resetBtn">↺ Reiniciar todo</button>
+    <div class="complete-badge" id="completeBadge">✓ ¡Teclado completo!</div>
+  </div>
 
 </div>
 
 <footer class="footer">
-    Desarrollado por <span style="color: #38bdf8; font-weight: 600;">TuNombre</span> · OmniTools AI · Desde 2026
+    Desarrollado por <span style="color: #38bdf8; font-weight: 600;">Eric</span> · OmniTools AI · Desde 2026
 </footer>
 
 <script>
 const layout = [
-  [
-    {l:'Esc',c:'Escape'},{l:'F1',c:'F1'},{l:'F2',c:'F2'},{l:'F3',c:'F3'},{l:'F4',c:'F4'},
-    {l:'F5',c:'F5'},{l:'F6',c:'F6'},{l:'F7',c:'F7'},{l:'F8',c:'F8'},
-    {l:'F9',c:'F9'},{l:'F10',c:'F10'},{l:'F11',c:'F11'},{l:'F12',c:'F12'},
-    {l:'PrtSc',c:'PrintScreen'},{l:'ScLk',c:'ScrollLock'},{l:'Pause',c:'Pause'}
-  ],
-  [
-    {l:'`',c:'Backquote'},{l:'1',c:'Digit1'},{l:'2',c:'Digit2'},{l:'3',c:'Digit3'},
-    {l:'4',c:'Digit4'},{l:'5',c:'Digit5'},{l:'6',c:'Digit6'},{l:'7',c:'Digit7'},
-    {l:'8',c:'Digit8'},{l:'9',c:'Digit9'},{l:'0',c:'Digit0'},{l:'-',c:'Minus'},
-    {l:'=',c:'Equal'},{l:'Bksp',c:'Backspace',w:'w4'},
-    {l:'Ins',c:'Insert'},{l:'Home',c:'Home'},{l:'PgUp',c:'PageUp'},
-    {l:'NLk',c:'NumLock'},{l:'N/',c:'NumpadDivide'},{l:'N*',c:'NumpadMultiply'},{l:'N-',c:'NumpadSubtract'}
-  ],
-  [
-    {l:'Tab',c:'Tab',w:'w3'},{l:'Q',c:'KeyQ'},{l:'W',c:'KeyW'},{l:'E',c:'KeyE'},
-    {l:'R',c:'KeyR'},{l:'T',c:'KeyT'},{l:'Y',c:'KeyY'},{l:'U',c:'KeyU'},
-    {l:'I',c:'KeyI'},{l:'O',c:'KeyO'},{l:'P',c:'KeyP'},{l:'[',c:'BracketLeft'},
-    {l:']',c:'BracketRight'},{l:'\\',c:'Backslash',w:'w3'},
-    {l:'Del',c:'Delete'},{l:'End',c:'End'},{l:'PgDn',c:'PageDown'},
-    {l:'N7',c:'Numpad7'},{l:'N8',c:'Numpad8'},{l:'N9',c:'Numpad9'},{l:'N+',c:'NumpadAdd',w:'w2',h:'h2'}
-  ],
-  [
-    {l:'Caps',c:'CapsLock',w:'w4'},{l:'A',c:'KeyA'},{l:'S',c:'KeyS'},{l:'D',c:'KeyD'},
-    {l:'F',c:'KeyF'},{l:'G',c:'KeyG'},{l:'H',c:'KeyH'},{l:'J',c:'KeyJ'},
-    {l:'K',c:'KeyK'},{l:'L',c:'KeyL'},{l:';',c:'Semicolon'},{l:"'",c:'Quote'},
-    {l:'Enter',c:'Enter',w:'w5'},
-    {l:'',c:'',gap:true},{l:'',c:'',gap:true},{l:'',c:'',gap:true},
-    {l:'N4',c:'Numpad4'},{l:'N5',c:'Numpad5'},{l:'N6',c:'Numpad6'}
-  ],
-  [
-    {l:'Shift',c:'ShiftLeft',w:'w5'},{l:'Z',c:'KeyZ'},{l:'X',c:'KeyX'},{l:'C',c:'KeyC'},
-    {l:'V',c:'KeyV'},{l:'B',c:'KeyB'},{l:'N',c:'KeyN'},{l:'M',c:'KeyM'},
-    {l:',',c:'Comma'},{l:'.',c:'Period'},{l:'/',c:'Slash'},{l:'Shift',c:'ShiftRight',w:'w6'},
-    {l:'',c:'',gap:true},{l:'↑',c:'ArrowUp'},{l:'',c:'',gap:true},
-    {l:'N1',c:'Numpad1'},{l:'N2',c:'Numpad2'},{l:'N3',c:'Numpad3'},{l:'NEnt',c:'NumpadEnter',w:'w2',h:'h2'}
-  ],
-  [
-    {l:'Ctrl',c:'ControlLeft',w:'w3'},{l:'Win',c:'MetaLeft',w:'w2'},{l:'Alt',c:'AltLeft',w:'w2'},
-    {l:'Space',c:'Space',w:'sp'},
-    {l:'AltGr',c:'AltRight',w:'w2'},{l:'Menu',c:'ContextMenu',w:'w2'},{l:'Ctrl',c:'ControlRight',w:'w3'},
-    {l:'',c:'',gap:true},{l:'←',c:'ArrowLeft'},{l:'↓',c:'ArrowDown'},{l:'→',c:'ArrowRight'},
-    {l:'N0',c:'Numpad0',w:'w4'},{l:'N.',c:'NumpadDecimal'}
-  ]
+  [{l:'Esc',c:'Escape'},{l:'F1',c:'F1'},{l:'F2',c:'F2'},{l:'F3',c:'F3'},{l:'F4',c:'F4'},{l:'F5',c:'F5'},{l:'F6',c:'F6'},{l:'F7',c:'F7'},{l:'F8',c:'F8'},{l:'F9',c:'F9'},{l:'F10',c:'F10'},{l:'F11',c:'F11'},{l:'F12',c:'F12'},{l:'PrtSc',c:'PrintScreen'},{l:'ScLk',c:'ScrollLock'},{l:'Pause',c:'Pause'}],
+  [{l:'`',c:'Backquote'},{l:'1',c:'Digit1'},{l:'2',c:'Digit2'},{l:'3',c:'Digit3'},{l:'4',c:'Digit4'},{l:'5',c:'Digit5'},{l:'6',c:'Digit6'},{l:'7',c:'Digit7'},{l:'8',c:'Digit8'},{l:'9',c:'Digit9'},{l:'0',c:'Digit0'},{l:'-',c:'Minus'},{l:'=',c:'Equal'},{l:'Bksp',c:'Backspace',w:'w4'},{l:'Ins',c:'Insert'},{l:'Home',c:'Home'},{l:'PgUp',c:'PageUp'},{l:'NLk',c:'NumLock'},{l:'N/',c:'NumpadDivide'},{l:'N*',c:'NumpadMultiply'},{l:'N-',c:'NumpadSubtract'}],
+  [{l:'Tab',c:'Tab',w:'w3'},{l:'Q',c:'KeyQ'},{l:'W',c:'KeyW'},{l:'E',c:'KeyE'},{l:'R',c:'KeyR'},{l:'T',c:'KeyT'},{l:'Y',c:'KeyY'},{l:'U',c:'KeyU'},{l:'I',c:'KeyI'},{l:'O',c:'KeyO'},{l:'P',c:'KeyP'},{l:'[',c:'BracketLeft'},{l:']',c:'BracketRight'},{l:'\\',c:'Backslash',w:'w3'},{l:'Del',c:'Delete'},{l:'End',c:'End'},{l:'PgDn',c:'PageDown'},{l:'N7',c:'Numpad7'},{l:'N8',c:'Numpad8'},{l:'N9',c:'Numpad9'},{l:'N+',c:'NumpadAdd',w:'w2',h:'h2'}],
+  [{l:'Caps',c:'CapsLock',w:'w4'},{l:'A',c:'KeyA'},{l:'S',c:'KeyS'},{l:'D',c:'KeyD'},{l:'F',c:'KeyF'},{l:'G',c:'KeyG'},{l:'H',c:'KeyH'},{l:'J',c:'KeyJ'},{l:'K',c:'KeyK'},{l:'L',c:'KeyL'},{l:';',c:'Semicolon'},{l:"'",c:'Quote'},{l:'Enter',c:'Enter',w:'w5'},{l:'',c:'',gap:true},{l:'',c:'',gap:true},{l:'',c:'',gap:true},{l:'N4',c:'Numpad4'},{l:'N5',c:'Numpad5'},{l:'N6',c:'Numpad6'}],
+  [{l:'Shift',c:'ShiftLeft',w:'w5'},{l:'Z',c:'KeyZ'},{l:'X',c:'KeyX'},{l:'C',c:'KeyC'},{l:'V',c:'KeyV'},{l:'B',c:'KeyB'},{l:'N',c:'KeyN'},{l:'M',c:'KeyM'},{l:',',c:'Comma'},{l:'.',c:'Period'},{l:'/',c:'Slash'},{l:'Shift',c:'ShiftRight',w:'w6'},{l:'',c:'',gap:true},{l:'↑',c:'ArrowUp'},{l:'',c:'',gap:true},{l:'N1',c:'Numpad1'},{l:'N2',c:'Numpad2'},{l:'N3',c:'Numpad3'},{l:'NEnt',c:'NumpadEnter',w:'w2',h:'h2'}],
+  [{l:'Ctrl',c:'ControlLeft',w:'w3'},{l:'Win',c:'MetaLeft',w:'w2'},{l:'Alt',c:'AltLeft',w:'w2'},{l:'Space',c:'Space',w:'sp'},{l:'AltGr',c:'AltRight',w:'w2'},{l:'Menu',c:'ContextMenu',w:'w2'},{l:'Ctrl',c:'ControlRight',w:'w3'},{l:'',c:'',gap:true},{l:'←',c:'ArrowLeft'},{l:'↓',c:'ArrowDown'},{l:'→',c:'ArrowRight'},{l:'N0',c:'Numpad0',w:'w4'},{l:'N.',c:'NumpadDecimal'}]
 ];
 
 const pressedKeys = new Set();
@@ -515,9 +497,7 @@ document.addEventListener('wheel', e => {
   document.getElementById('scrollCount').textContent = '× ' + scrollN;
   document.getElementById('mwh').style.fill = '#00b57d';
   clearTimeout(si._t);
-  si._t = setTimeout(() => {
-    document.getElementById('mwh').style.fill = '#2a2a35';
-  }, 200);
+  si._t = setTimeout(() => { document.getElementById('mwh').style.fill = '#2a2a35'; }, 200);
   updateUI();
 });
 
@@ -539,8 +519,5 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
 buildKB();
 </script>
-  <footer class="footer">
-    Desarrollado por <span style="color: #38bdf8; font-weight: 600;">Eric</span> · OmniTools AI · Desde 2026
-</footer>
 </body>
 </html>
