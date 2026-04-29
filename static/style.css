@@ -39,9 +39,15 @@ h1 {
     color: #38bdf8;
 }
 .main-logo {
-    width: 150px;       /* Ajusta el tamaño aquí */
+    width: 450px;          /* Lo hacemos bastante más grande */
     height: auto;
     display: block;
-    margin: 40px auto 0 auto; /* Lo centra y le da espacio arriba */
-    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5)); /* Le da un brillo azulado */
+    margin: 100px auto 0 auto; /* Aumentamos el margen superior (100px) para que baje */
+    filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4)); /* Brillo sutil */
+    transition: transform 0.3s ease;
+}
+
+/* Efecto opcional: que el logo crezca un poco al pasar el ratón */
+.main-logo:hover {
+    transform: scale(1.02);
 }
