@@ -1,101 +1,40 @@
-/* Configuración General */
-body {
-    background-color: #0f172a; /* Fondo azul oscuro profundo */
-    color: #f1f5f9;            /* Texto blanco suave */
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-
-/* Contenedor principal */
-.container {
-    width: 90%;
-    max-width: 800px;
-    padding: 40px 20px;
-}
-
-/* Títulos con degradado */
+/* Título Gigante y Centrado */
 h1 {
-    color: #38bdf8;
-    font-size: 2.5rem;
+    font-size: 4.5rem; /* Mucho más grande */
     text-align: center;
+    margin-top: 50px;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
     background: linear-gradient(to right, #38bdf8, #818cf8);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 30px;
 }
 
-/* Enlaces y Navegación */
-nav {
-    margin-bottom: 30px;
-    text-align: center;
+/* Barra de Navegación Superior */
+.top-nav {
+    width: 100%;
+    background-color: #1e293b; /* Un tono más claro que el fondo para que resalte */
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    border-bottom: 1px solid #334155;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-nav a {
-    color: #94a3b8;
+.top-nav a {
+    color: #f1f5f9;
     text-decoration: none;
-    margin: 0 15px;
-    font-weight: bold;
-    transition: color 0.3s;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s;
 }
 
-nav a:hover {
+.top-nav a:hover {
+    background-color: #334155;
     color: #38bdf8;
-}
-
-/* Cuadro de texto (Textarea) */
-textarea {
-    width: 100%;
-    height: 250px;
-    background-color: #1e293b;
-    color: #38bdf8;
-    border: 2px solid #334155;
-    border-radius: 12px;
-    padding: 15px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    resize: vertical;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-textarea:focus {
-    outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
-}
-
-/* Botón Moderno */
-button {
-    width: 100%;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
-}
-
-/* Caja de Resultados de la IA */
-.resultado {
-    background-color: #1e293b;
-    border-left: 4px solid #a855f7;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 30px;
-    white-space: pre-wrap; /* Mantiene los saltos de línea de la IA */
-    color: #e2e8f0;
 }
