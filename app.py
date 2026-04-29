@@ -15,5 +15,9 @@ def seguridad():
 def testers():
     return render_template('testers.html')
 
+@app.route('/teclado')
+def teclado():
+    return render_template('teclado.html')
+    
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
