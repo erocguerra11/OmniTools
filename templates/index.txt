@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>OmniTools AI</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        nav { background: #333; padding: 10px; }
+        nav a { color: white; margin-right: 15px; text-decoration: none; }
+        .card { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/seguridad">Ciberseguridad</a>
+        <a href="/testers">Testers</a>
+    </nav>
+    <div class="card">
+        <h1>OmniTools AI Platform</h1>
+        <p>Bienvenido. Selecciona un módulo en el menú superior para comenzar.</p>
+    </div>
+</body>
+</html>
