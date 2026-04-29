@@ -139,7 +139,9 @@ html, body {
 .footer {
     text-align: center;
     padding: 30px;
-    color: #1e293b;
     font-size: 0.8rem;
     letter-spacing: 1px;
+    border-top: 1px solid rgba(56, 189, 248, 0.1);
+    color: #334155;
+    margin-top: 60px;
 }
